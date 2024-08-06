@@ -120,20 +120,3 @@ class _FadeInFadeOutListState extends State<FadeInFadeOutList> {
     );
   }
 }
-
-
-
-// class FadeInFadeOutListItem extends StatelessWidget {
-//   final double opacity;
-//   final Widget child;
-//   const FadeInFadeOutListItem({required this.opacity, required this.child});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return AnimatedOpacity(
-//         opacity: opacity.clamp(0, 1),
-//         duration: Duration(milliseconds: 500),
-//       child: child,
-//     );
-//   }
-// }
