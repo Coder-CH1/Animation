@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class Home_Page extends StatelessWidget {
   const Home_Page({Key? key}) : super(key: key);
@@ -59,6 +60,7 @@ class _FadeInFadeOutListState extends State<FadeInFadeOutList> {
     'Yobe',
     'Zamfara'
   ];
+  final Map<int, double> _visibilityFraction = {};
   @override
 
   Widget build(BuildContext context) {
@@ -81,22 +83,34 @@ class _FadeInFadeOutListState extends State<FadeInFadeOutList> {
             controller: _scrollController,
             itemCount: _states.length,
             itemBuilder: (context, index){
-              return InkWell(
-                onTap: () {
+              return VisibilityDetector(
+                key: Key('item-$index'),
+                onVisibilityChanged: (VisibilityInfo info) {
                   setState(() {
-                    _isSelected[index] = !_isSelected[index];
-                    _colors[index] = _isSelected[index] ? Colors.indigo : Colors.purple;
+                    _visibilityFraction[index] = info.visibleFraction;
                   });
                 },
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Card(
-                    color: _isSelected[index] ? Colors.black54 : Colors.brown,
-                    child: ListTile(
-                      title: Text(_states[index], style: TextStyle(
-                        fontSize: 20,
-                        color: _colors[_colorIndex]
-                      )),
+                child: AnimatedOpacity(
+                  opacity: _visibilityFraction[index] ?? 0.0,
+                  duration: Duration(milliseconds: 500),
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        _isSelected[index] = !_isSelected[index];
+                        _colors[index] = _isSelected[index] ? Colors.indigo : Colors.purple;
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Card(
+                        color: _isSelected[index] ? Colors.black54 : Colors.brown,
+                        child: ListTile(
+                          title: Text(_states[index], style: TextStyle(
+                            fontSize: 20,
+                            color: _colors[_colorIndex]
+                          )),
+                        ),
+                      ),
                     ),
                   ),
                 ),
