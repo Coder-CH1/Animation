@@ -6,7 +6,7 @@ class Home_Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: FadeInFadeOutList(),
     );
   }
@@ -21,19 +21,19 @@ class FadeInFadeOutList extends StatefulWidget {
 
 class _FadeInFadeOutListState extends State<FadeInFadeOutList> {
   final ScrollController _scrollController = ScrollController();
-  List<Color> _colors = [Colors.green, Colors.redAccent, Colors.pink, Colors.blueAccent, Colors.deepOrange];
+  final List<Color> _colors = [Colors.green, Colors.redAccent, Colors.pink, Colors.blueAccent, Colors.deepOrange];
   int _colorIndex = 0;
-  List<bool> _isSelected = List.filled(36, false);
+  final List<bool> _isSelected = List.filled(36, false);
   final List<String> _states = [
     'Abia',
     'Adamawa',
-    'Akwa Ibom',
+    'Akwa-Ibom',
     'Anambra',
     'Bauchi',
     'Bayelsa',
     'Benue',
     'Borno',
-    'Cross River',
+    'Cross-River',
     'Delta',
     'Ebonyi',
     'Edo',
@@ -92,7 +92,7 @@ class _FadeInFadeOutListState extends State<FadeInFadeOutList> {
                 },
                 child: AnimatedOpacity(
                   opacity: _visibilityFraction[index] ?? 0.0,
-                  duration: Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 500),
                   child: InkWell(
                     onTap: () {
                       setState(() {
