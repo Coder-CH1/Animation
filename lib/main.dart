@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:animation/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,53 +14,98 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Home_Page(),
+      home: const Animations(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
+class Animations extends StatefulWidget {
+  const Animations({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<Animations> createState() => _AnimationsState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _AnimationsState extends State<Animations>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late final Animation<AlignmentGeometry> _alignAnimation;
+  late final Animation<double> _rotationAnimation;
+  late final Animation<double> _sizeAnimation;
+  late final Animation<double> _opacityAnimation;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    )..forward().then((_) {
+      //_controller.dispose();
     });
+
+    _alignAnimation = Tween<AlignmentGeometry>(
+      begin: Alignment.topCenter,
+      end: Alignment.center,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeIn,
+      ),
+    );
+
+    _rotationAnimation = Tween<double>(begin: 0, end: 2).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOutCubic,
+      ),
+    );
+
+    _sizeAnimation = Tween<double>(begin: 1.0,end: 0.5).animate(
+      CurvedAnimation(parent: _controller, curve: const Interval(0.5, 1.0, curve: Curves.easeOut),)..addListener(() {
+        setState(() {
+
+        });
+      })
+    );
+
+    _opacityAnimation = Tween<double>(begin: 1.0,end: 0.5).animate(
+        CurvedAnimation(parent: _controller, curve: const Interval(0.5, 1.0, curve: Curves.easeIn),)..addListener(() {
+          setState(() {
+
+          });
+        })
+    );
+  }
+
+  @override
+  void dispose() {
+   _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+    return SizedBox(
+      height: 200,
+      child: AlignTransition(
+        alignment: _alignAnimation,
+        child: RotationTransition(
+          turns: _rotationAnimation,
+          child:  ScaleTransition(
+            scale: _sizeAnimation,
+            child: FadeTransition(
+              opacity: _opacityAnimation,
+              child: Container(
+                //color1: pink,
+                color: Colors.white,
+                width: 50,
+                height: 50,
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
