@@ -1,0 +1,4 @@
+*.dart linguist-language=Dart
+*.cpp linguist-documentation=false
+*.h linguist-documentation=false
+*.cmake linguist-documentation=false

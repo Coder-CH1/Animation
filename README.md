@@ -1,4 +1,4 @@
 # Animation
-## _Animations in Flutter_.
+#### Animations in Flutter:
 
-##### _A Flutter project that displays a list of states in Nigeria with animated text color changes on scroll and tap, and fade-out effect as cards scroll off-screen_.
+- A Flutter project that displays a list of states in Nigeria with animated text color changes on scroll and tap, and fade-out effect as cards scroll off-screen.
